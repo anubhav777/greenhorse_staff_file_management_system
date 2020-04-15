@@ -18,9 +18,9 @@ psycopg2-binary = "*"
 psycopg2 = "*"
 gunicorn = "*"
 flask-mail = "*"
-jwt = "*"
 werkzeug = "*"
 itsdangerous = "*"
+pyjwt = "*"
 
 [requires]
 python_version = "3.7"
