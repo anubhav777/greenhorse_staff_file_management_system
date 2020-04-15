@@ -85,13 +85,6 @@
             "index": "pypi",
             "version": "==2.4.1"
         },
-        "functools": {
-            "hashes": [
-                "sha256:596ed8999dee419c0749a41bfdd82e4697e80ea27ee01c716003ef55be9a54c5"
-            ],
-            "index": "pypi",
-            "version": "==0.5"
-        },
         "getmac": {
             "hashes": [
                 "sha256:2e4aef2dd6c3befccd7cf9e18badddd24ab1992b928e2e811d415ed47137c547",
