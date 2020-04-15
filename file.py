@@ -57,7 +57,7 @@ def ip_adress():
     else:
         inet_ip=all_ip
     mac_ad=user_mac(inet_ip)
-    print(mac_ad)
+    
     return mac_ad
 
 
@@ -88,13 +88,13 @@ def weekly():
         count+=1
     
     return 'hi'
-print(time())
+
 def generate_token(user_email,expiry_time=300):
     s=Serializer(app.config['SECRET'],expiry_time)
     new_user=Signup.query.filter_by(email=user_email).first()
     if not new_user:
         return False
-    print(new_user.id)
+   
 
     token=s.dumps({'user_id':new_user.id}).decode('UTF-8')
     return token
@@ -120,12 +120,11 @@ def token_decoder(token):
     uid=None
     try:
         uid=s.loads(token)['user_id']
-        print(uid)
+        
     except:
         return False
     return uid
-# tok=generate_token('genjilama007@gmail.com')
-# print(type(token_decoder(tok)))
+
 
 def makefolder(fgh):
     path="./%s"%fgh
@@ -133,16 +132,16 @@ def makefolder(fgh):
         os.mkdir(fgh)
         return(path)
     else:
-            print('path already created')
+           
             return (path)
 
 def allowed_image(file):
  
     filename=str(file)
-    print(filename)
+  
     
     if not "." in filename:
-        print(1)
+       
         return False
     
     ext=filename.rsplit(".",1)[1]
@@ -150,14 +149,14 @@ def allowed_image(file):
     if ext.upper() in app.config['ALLOWED_IMAGE_EXTENSION']:
         return True
     else:
-        print(2)
+       
         return False
 
 def file_checker(filename,filetype):
     file_check=None
     if filetype == "document":
         file_check=Filesdb.query.filter_by(filename=filename).first()
-        print('document')
+       
     elif filetype == "picture":
         new_filename=f"Users/{filename}"
         file_check=Signup.query.filter_by(picturepath=new_filename).first()
@@ -169,7 +168,7 @@ def file_checker(filename,filetype):
 def profile_checker(path_name):
     new_path=Signup.query.filter_by(picturepath=path_name).first()
     path_split=path_name.split("/",2)
-    print(path_split[1])
+  
     new_filename=str(path_split[1])
 
     if new_path:
@@ -178,7 +177,7 @@ def profile_checker(path_name):
         return False
     new_split=new_filename.rsplit(".",2)
     file_check=new_split[1]
-    print(file_check)
+ 
     if file_check.upper() in app.config['ALLOWED_PICTURE_EXTENSION']:
         return True
     else:
@@ -187,7 +186,7 @@ def profile_checker(path_name):
 
 def upload_file(file_name, bucket):
     object_name = file_name
-    print(object_name)
+   
     s3_client = boto3.client('s3')
     response = s3_client.upload_file(file_name, bucket, object_name)
 
@@ -208,8 +207,7 @@ def loginchecker(uid):
             result=Logindb(logged_in,current_status,userid)
             db.session.add(result)
             db.session.commit()
-   
-    print(new_login)
+
     return True
 
 
@@ -238,7 +236,7 @@ def graph_counter(dt,args,kwargs):
 def array_sorter(args,kwargs,rev=False):
     new_value=sorted(args, key=lambda k: k[kwargs],reverse=rev)
     return new_value
-# print(graph_counter('2020-04-06','file',13))
+
 def date_filter(args,kwargs):
     overall_data=None
     new_array=[]
@@ -281,7 +279,7 @@ def overall_filter(kwargs,weekly=False):
     overall_data=kwargs
     final_array=[]
     new_arr=[]
-    print(weekly)
+
             
 
     for i in range(len(overall_data)):
@@ -299,26 +297,26 @@ def overall_filter(kwargs,weekly=False):
             day_name=datetime.date(int(year), int(month), int(day))
             new_day=day_name.strftime("%A")
             short_form=new_day[:3]
-            # print(short_form)
+          
             new_arr.append(overall_data[i].date)
             new_obj={'date':overall_data[i].date,'total':total,'y_axis':short_form}
             final_array.append(new_obj)
             
     new_sort=array_sorter(final_array,'date')
-    print(new_sort)
+   
 
     return new_sort
 
     
 
 def all_file(users=False):
-    print(users)
+
     files=None
     if users:
         files=Filesdb.query.filter_by(userid=users).all()
     else:
         files= Filesdb.query.all()
-    print(files,users)
+ 
     return files
 def all_questions(users=False):
     questions=None

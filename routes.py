@@ -9,7 +9,7 @@ from datetime import date
 from models import *
 from file import *
 key=app.config['SECRET']
-print(key)
+
 @app.route('/signup',methods=['POST'])
 def register():
     email=request.form['email']
@@ -25,9 +25,9 @@ def register():
     filepath=request.files['file']
     filename=filepath.filename
     picturepath=f"Users/{filename}"
-    print(email,picturepath)
+    
     path=makefolder('Users')
-    print(path)
+    
     validator=Signup.query.filter_by(email=email).first()
 
     if validator:
@@ -52,7 +52,7 @@ def getuser(currrentuser,id):
         return  ({'status':'error','noty':'you cannot perfom this action'})
 
     if user.usertype != "admin":
-        print(user.id)
+        
         new_user=Signup.query.get(user.id)
         return signup_schema.jsonify(new_user)
     
@@ -143,7 +143,7 @@ def updateusertype(currentuser,id):
 @token
 def deleteuser(currentuser,id):
     curr_user=Signup.query.filter_by(id=currentuser).first()
-    print(curr_user.usertype)
+   
 
     if curr_user.usertype != 'admin':
         return ({'status':'error','noty':'you cannot perfom this action'})
@@ -157,11 +157,11 @@ def deleteuser(currentuser,id):
     
 
 
-# print(loginchecker(2))
+
 @app.route('/login')
 def login():
     auth= request.authorization
-    print(auth.password)
+    
     
    
 
@@ -185,8 +185,7 @@ def login():
 
     return ({'status':'error','noty':'you login credetials do not match'})
 
-# print(month_filter(all_file()))
-# weekly()
+
 
 @app.route('/graph',methods=['GET'])
 @token
@@ -204,7 +203,7 @@ def graph(currentuser):
         if dats == 'date':
             if users:
                 return ({'status':'error','noty':'you cannot perfom this action'})
-            print(dats)
+            
             new_date=request.headers['curr_date']
             new_methods=request.headers['send_methods']
             data_toreturn=None
@@ -229,7 +228,7 @@ def graph(currentuser):
             elif new_methods == 'file':
                 data_toreturn=month_filter(new_file)
             else:
-                print(new_methods)
+                
                 data_toreturn=month_filter(new_question)
             return ({'data':data_toreturn,'title':'Overall Report'})
             
@@ -255,7 +254,7 @@ def graph(currentuser):
 
         
     else:
-        print(dats)
+       
         newdate=date.today()
         login_db=Logindb.query.filter_by(date=newdate).all()
         login_count=0
@@ -264,13 +263,13 @@ def graph(currentuser):
         target=None
         
     
-        print(file_count,question_count)
+       
 
         for i in range(len(login_db)):
             if login_db[i].loguser.usertype == "staff":
                 login_count+=1
 
-        print(login_count)
+       
         if signup.usertype == 'admin':
             target=(login_count * 60)
         else:
@@ -290,7 +289,7 @@ def addlink(currentuser):
     data=None
     if not curr_user:
         return  ({'status':'error','noty':'you cannot perfom this action'})
-    print(curr_user.usertype)
+    
     if curr_user.usertype != "staff" and (curr_user.usertype) != "admin":
         return ({'status':'error','noty':'you cannot perfom this action'})
   
@@ -302,7 +301,7 @@ def addlink(currentuser):
     new_date=date.today()
     userid=curr_user.id
     process=request.json['process']
-    print(linkname)
+  
     if process == "Check": 
     
         link_validator=Question.query.filter_by(linkname=linkname).first()
@@ -460,14 +459,13 @@ def upload(currentuser):
     main_array=[]
     new_date=date.today()
     today=new_date.strftime('%Y-%m-%d')
-    print(len(res))
+    
     if len(res) == 0:
         return({'status':'error','noty': 'please enter file to be uploaded'})
     for i in range(len(res)):
         url=request.form['url']
         new_filename="%s %s"%(today,res[i].filename)
-        print(new_filename)
-        print(res[i].filename,url)
+       
         link_check=link_validatere(url)
         if not link_check:
             return ({'status':'error','noty':'Sorry the link is invalid'})
@@ -480,20 +478,17 @@ def upload(currentuser):
             return ({'status':'error','noty':'file name is empty'})
 
         if not allowed_image(res[i].filename):
-            print('err')
+           
             return({'status':'error','noty':'file is not valid'})
       
         if not file_checker(new_filename,'document'):
-            print('found')
+            
             return({'status':'error','noty':'file already added'})
        
 
         
         res[i].save(os.path.join(new_path,new_filename))
-        # res[i].save(os.path.join(upload_folder,res[i].filename))
-        # s3_resource=boto3.resource('s3')
-        # my_bucket=s3_resource.Bucket('greenhorse')
-        # s3.put_object(Bucket='greenhorse',Body=res[i],Key=res[i].filename)
+      
         upload_file(f"{user.fullname}/{new_filename}",'greenhorse')
       
         total_wordcount=word_count(new_path+"\%s"%new_filename)
@@ -510,28 +505,19 @@ def upload(currentuser):
         result=Filesdb(filename,url,filepath,status,wordcount,curr_date,userid)
         db.session.add(result)
         db.session.commit()
-        print(main_array)
+        
         remove_file=os.path.join(new_path,new_filename)
         file_remove(remove_file)
         return({'status':'alert','noty':'File uploaded Successfully','wordcount':wordcount})
     
-    print(main_array)
+    
     return({'status':'file uploaded sucessfully'})
 
-    # print(res.filename)
-    # return jsonify({'hi':'hi'})
 
 
 
-@app.route('/try',methods=["POST"])
-def getbla():
-    link=request.json['link']
-    link_checker=Question.query.filter_by(linkname=link).first()
 
-    if link_checker:
-        print('corr')
-    else:
-        print('wrong')
+
 
 
     
@@ -557,7 +543,7 @@ def getallfile(currentuser):
             new_object={'id':data[i].id,'filename':data[i].filename,'filepath':data[i].filepath,'status':data[i].status,'url':data[i].url,'wordcount':data[i].wordcount,'date':data[i].date,'user':data[i].filedb.fullname,'uid':data[i].userid}
             array.append(new_object)
 
-    print(len(array))
+   
     result=filesdbs_schema.dump(data)
     return jsonify({'data':array,'user':user.usertype})
 
@@ -575,8 +561,7 @@ def getfile(currentuser,id):
 
     if not extras:
         result=Filesdb.query.get(id)
-        # arr={'id':result.id,'filename':result.filename,'url':result.url,'status':result.status,'wordcount':result.wordcount,'userid':result.filedb.fullname}
-        # print(arr)
+   
         return filesdb_schema.jsonify(result)
     all_question=Filesdb.query.filter_by(userid=extras).all()
 
@@ -606,7 +591,8 @@ def updatefile(currentuser,ids):
     userid=request.json['userid']
 
     
-    print(request.json['wordcount'])
+ 
+ 
     update_file=Filesdb.query.get(ids)
     update_file.filename=filename
     update_file.url=url
@@ -650,10 +636,10 @@ def usergarph(currentuser,id):
     for i in range(len(data)):
         splt_date=data[i].date.split(" ",2)
         new_date=splt_date[1]
-        print(new_date)
+       
         new_object={'id':data[i].id,'filename':data[i].filename,'date':new_date,'uid':data[i].userid,'user':data[i].filedb.fullname}
         array.append(new_object)
-    print(array)
+   
     result=filesdbs_schema.dump(data)
     return jsonify({'data':array,'user':user.usertype})
 
@@ -663,16 +649,11 @@ def muliple():
     ab=0
     for i in range(len(res)):
         ab+=1
-        print(res[i].filename)
+       
     
-    print(ab)
+    
     return({'hi':'ho'})
-# def download_file(filename,bucket):
-#     s3_resource=boto3.resource('s3')
-#     output=f"./downloads/bla.docx"
-#     print(output)
-#     s3_resource.Bucket(bucket).download_file(f"mainadmin/{filename}",output)
-#     return output
+
 
 @app.route('/download/<path:filepath>',methods=['GET'])
 
@@ -680,7 +661,7 @@ def download(filepath):
     new_filepath=None
     filetype=None
     new_mimetype=None
-    print(filepath)    
+   
     if '/' in filepath:
         new_path=filepath.split("/",2)
         new_filepath=new_path[1]
@@ -695,11 +676,9 @@ def download(filepath):
         filetype='picture'
         new_mimetype="image/jpeg"
 
-    print(filetype)
-    print(new_filepath)
     if file_checker(new_filepath,filetype):
         return({"status":'No such files please check it again'})
-    print(new_mimetype)
+    
     s3_resource=boto3.resource('s3')
     my_bucket=s3_resource.Bucket('greenhorse')
     file_obj=my_bucket.Object(filepath).get()
@@ -709,18 +688,18 @@ def download(filepath):
                     headers={"Content-Disposition":"attachement;filename={}".format(filepath)})
     r.headers.add("Access-Control-Allow-Origin", "*")
     r.headers.add('Access-Control-Expose-Headers','*')
-    print(type(r))
+   
     
     return r
     
 @app.route('/resetpassword',methods=['POST'])
 def resetpassword():
     email=request.json['email']
-    print(email)
+    
     if email == '':
         return ({'status':'error','noty':'please provide email'})
     tok=generate_token(email)
-    print(tok)
+    
     if not tok:
         return ({'status':'error','noty':'please enter valid email'})
     send_email(tok,email,'reset')
@@ -729,11 +708,11 @@ def resetpassword():
 @app.route('/verification',methods=['POST'])
 def verfification():
     email=request.json['email']
-    print(email)
+    
     if email == '':
         return ({'status':'error','noty':'please provide email'})
     tok=generate_token(email)
-    print(tok)
+  
     if not tok:
         return ({'status':'error','noty':'please enter valid email'})
     send_email(tok,email,'verification')
