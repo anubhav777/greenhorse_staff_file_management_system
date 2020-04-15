@@ -1,6 +1,5 @@
 from app import app,mail
 from flask import request,jsonify,send_file,Response,render_template
-from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash,check_password_hash
 import jwt
 import boto3

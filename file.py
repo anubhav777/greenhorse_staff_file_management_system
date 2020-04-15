@@ -10,7 +10,6 @@ from functools import wraps
 import docx2txt
 from flask_cors import CORS
 import boto3
-import magic
 from flask_cors import CORS,cross_origin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_mail import Mail,Message
