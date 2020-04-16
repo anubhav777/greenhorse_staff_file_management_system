@@ -490,7 +490,7 @@ def upload(currentuser):
       
         upload_file(f"{user.fullname}/{new_filename}",'greenhorse')
       
-        total_wordcount=word_count(new_path+"\%s"%new_filename)
+        total_wordcount=word_count(new_path+"/%s"%new_filename)
         main_array.append({"name":res[i].filename,'wordcount':total_wordcount})
         check_value+=1
         filename=new_filename
