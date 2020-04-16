@@ -10,10 +10,10 @@ from flask_mail import Mail,Message
 
 app= Flask(__name__)
 
-CORS(app)
+# CORS(app)
 db=SQLAlchemy(app)
 ma=Marshmallow(app)
-CORS(app)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 s3=boto3.client('s3')
 basedir=os.path.abspath(os.path.dirname(__file__))
 app.config.from_object('config.Development')
