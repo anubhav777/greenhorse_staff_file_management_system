@@ -103,14 +103,14 @@ def send_email(token,email,condition):
     if condition == 'verification':
         msg=Message('Account Verification',sender='noreply@demo.com',recipients=[email])
         msg.body=f''' to verify your account please click the link below
-        https://greehorsebackend.herokuapp.com/verifier?tk={token}
+               https://master.d19dblbheghhlz.amplifyapp.com/verifier?tk={token}
         
         '''
     
     else:
         msg=Message('Password Reset Settings',sender='noreply@demo.com',recipients=[email])
         msg.body=f''' to reset your password please visit the link below
-        https://greehorsebackend.herokuapp.com/confirm?tk={token}
+        https://master.d19dblbheghhlz.amplifyapp.com/confirm?tk={token}
         If you have not requested please leave as it is
         '''
     mail.send(msg)

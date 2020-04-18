@@ -214,6 +214,7 @@ def graph(currentuser):
                 data_toreturn=date_filter(new_date,'file')
             else:
                 data_toreturn=date_filter(new_date,'question')
+                print(data_toreturn)
             return ({'data':data_toreturn,'title':'User Report'})
         elif dats == 'overall':
             new_methods=request.headers['send_methods']
@@ -226,6 +227,7 @@ def graph(currentuser):
                 return ({'file':files,'question':questions,'title':'Overall Report'})
             elif new_methods == 'file':
                 data_toreturn=month_filter(new_file)
+                print(data_toreturn)
             else:
                 
                 data_toreturn=month_filter(new_question)
