@@ -278,6 +278,31 @@ def graph(currentuser):
         return({'questions':question_count,'file':file_count,'loginneduser':login_count,'target':target})
 
 
+@app.route('/dateuser',methods=['POST'])
+@token
+def dateuser(currentuser):
+    users=Signup.query.filter_by(id=currentuser).first()
+    stats=request.args.get('userid')
+    date=request.json['date']
+    print(date,stats)
+    if users.usertype != 'admin':
+        return({'status':'error','noty':'You don not have privilleges'})
+    if stats == 'none':
+        newarr=[]
+        new_data=Filesdb.query.filter_by(date=date).all()
+        for i in range(len(new_data)):
+            new_obj={'filename':new_data[i].filename,'url':new_data[i].url,'date':new_data[i].date,'username':new_data[i].filedb.fullname}
+            newarr.append(new_obj)
+        return({'status':'alert','noty':'data sucesfuuly extracted','data':newarr})
+
+    else:
+        new_stats=int(stats)
+        new_data=Filesdb.query.filter_by(userid=new_stats,date=date).all()
+        result=filesdbs_schema.dump(new_data)
+        
+        return jsonify({'status':'alert','noty':'data sucesfuuly extracted','data':result})
+
+
 
 verifier=False
 @app.route('/addlink',methods=['POST'])
