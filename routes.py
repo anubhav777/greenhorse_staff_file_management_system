@@ -31,17 +31,19 @@ def register():
 
     if validator:
         return ({'status':'error','noty':'This email has already been registered'})
-    if not profile_checker(picturepath):
-        return({'status':'error','noty':'the pictiure seems to be in wrong format or seems to have been uploaded'})
-    filepath.save(os.path.join(path,filename))
-    upload_file(picturepath,'greenhorse')
-    new_data=Signup(email,fullname,address,phone,password,usertype,registertime,is_verified,picturepath)
-    db.session.add(new_data)
-    db.session.commit()
-    remove_file=os.path.join(path,filename)
-    file_remove(remove_file)
-    # return signup_schema.jsonify(new_data)
-    return({'status':'success','noty':'Sucessfully registered'})
+    else:
+        if not profile_checker(picturepath):
+            return({'status':'error','noty':'the pictiure seems to be in wrong format or seems to have been uploaded'})
+        else:
+            filepath.save(os.path.join(path,filename))
+            upload_file(picturepath,'greenhorse')
+            new_data=Signup(email,fullname,address,phone,password,usertype,registertime,is_verified,picturepath)
+            db.session.add(new_data)
+            db.session.commit()
+            remove_file=os.path.join(path,filename)
+            file_remove(remove_file)
+            # return signup_schema.jsonify(new_data)
+            return({'status':'success','noty':'Sucessfully registered'})
 
 @app.route('/getuser/<id>',methods=['GET'])
 @token
