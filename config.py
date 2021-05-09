@@ -11,7 +11,7 @@ class Config(object):
     MAIL_PORT=587
     MAIL_USE_TLS=True
     MAIL_USERNAME='magaranub@gmail.com'
-    MAIL_PASSWORD='12Anubhav@'
+    MAIL_PASSWORD='*******'
     ALLOWED_PICTURE_EXTENSION=['JPEG',"JPG"]
     SECRET='secret'
     ALLOWED_IMAGE_EXTENSION=['DOCX','PDF']
@@ -27,4 +27,4 @@ class Production(Config):
 class Development(Config):
     DEBUG=False
     basedir=os.path.abspath(os.path.dirname(__file__))
-    SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://flasktest:password@flasktest.cd7q5lzal6jr.us-east-1.rds.amazonaws.com:5432/flasktest'
+    SQLALCHEMY_DATABASE_URI='postgresql+psycopg2://flasktest:*******@flasktest.cd7q5lzal6jr.us-east-1.rds.amazonaws.com:5432/flasktest'
